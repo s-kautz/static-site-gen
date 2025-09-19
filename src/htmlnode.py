@@ -7,7 +7,7 @@ class HTMLNode:
   
   def to_html(self):
     raise NotImplementedError
-
+  
   def props_to_html(self):
     try:
       html_props = ""
@@ -19,7 +19,7 @@ class HTMLNode:
   
   def __repr__(self):
     return f'HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})'
-  
+
 class LeafNode(HTMLNode):
   def __init__(self, tag, value, props=None):
     super(LeafNode, self).__init__(tag=tag, value=value, children=None, props=props)
