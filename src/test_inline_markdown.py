@@ -19,7 +19,7 @@ class TestTextNode(unittest.TestCase):
                 TextNode("bolded", TextType.BOLD),
                 TextNode(" word", TextType.TEXT),
             ],
-            new_nodes,
+            new_nodes
         )
 
     def test_delim_bold_double(self):
@@ -34,7 +34,7 @@ class TestTextNode(unittest.TestCase):
                 TextNode(" word and ", TextType.TEXT),
                 TextNode("another", TextType.BOLD),
             ],
-        new_nodes,
+        new_nodes
         )
 
     def test_delim_bold_multiword(self):
@@ -49,7 +49,7 @@ class TestTextNode(unittest.TestCase):
                 TextNode(" and ", TextType.TEXT),
                 TextNode("another", TextType.BOLD),
             ],
-            new_nodes,
+            new_nodes
         )
 
     def test_delim_italic(self):
@@ -61,7 +61,7 @@ class TestTextNode(unittest.TestCase):
                 TextNode("italic", TextType.ITALIC),
                 TextNode(" word", TextType.TEXT),
             ],
-            new_nodes,
+            new_nodes
         )
 
     def test_delim_bold_and_italic(self):
@@ -74,7 +74,7 @@ class TestTextNode(unittest.TestCase):
                 TextNode(" and ", TextType.TEXT),
                 TextNode("italic", TextType.ITALIC),
             ],
-            new_nodes,
+            new_nodes
         )
 
     def test_delim_code(self):
@@ -86,7 +86,7 @@ class TestTextNode(unittest.TestCase):
                 TextNode("code block", TextType.CODE),
                 TextNode(" word", TextType.TEXT),
             ],
-            new_nodes,
+            new_nodes
         )
 
     def test_extract_markdown_images(self):
@@ -116,30 +116,56 @@ class TestTextNode(unittest.TestCase):
     def test_split_nodes_image(self):
         node = TextNode("This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)", TextType.TEXT)
         self.assertListEqual(split_nodes_image([node]), [TextNode("This is text with an ", TextType.TEXT), (TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"))])
-    
+
     def test_split_nodes_multiple_images_trailing_text(self):
         node = TextNode("This is text with two images: this ![image](https://i.imgur.com/zjjcJKZ.png), and ![this image](https://i.imgur.com/zjjcJKZ.png) as well.", TextType.TEXT)
-        self.assertListEqual(split_nodes_image([node]), [TextNode("This is text with two images: this ", TextType.TEXT), (TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png")), (TextNode(", and ", TextType.TEXT)), (TextNode("this image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png")), (TextNode(" as well.", TextType.TEXT))])
+        self.assertListEqual(
+            split_nodes_image([node]),
+            [
+                TextNode("This is text with two images: this ", TextType.TEXT),
+                TextNode("image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(", and ", TextType.TEXT),
+                TextNode("this image", TextType.IMAGE, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode(" as well.", TextType.TEXT)
+            ]
+        )
 
     def test_split_nodes_link(self):
         node = TextNode("This is text with a [link](https://i.imgur.com/)", TextType.TEXT)
-        self.assertListEqual(split_nodes_link([node]), [TextNode("This is text with a ", TextType.TEXT), (TextNode("link", TextType.LINK, "https://i.imgur.com/"))])
-    
+        self.assertListEqual(
+            split_nodes_link([node]),
+            [
+                TextNode("This is text with a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://i.imgur.com/")
+            ]
+        )
+
     def test_split_nodes_multiple_links_trailing_text(self):
         node = TextNode("This is text with two links: this [link](https://imgur.com/), and [this link](https://google.com/) as well.", TextType.TEXT)
-        self.assertListEqual(split_nodes_link([node]), [TextNode("This is text with two links: this ", TextType.TEXT), (TextNode("link", TextType.LINK, "https://imgur.com/")), (TextNode(", and ", TextType.TEXT)), (TextNode("this link", TextType.LINK, "https://google.com/")), (TextNode(" as well.", TextType.TEXT))])
+        self.assertListEqual(
+            split_nodes_link([node]),
+            [
+                TextNode("This is text with two links: this ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://imgur.com/"),
+                TextNode(", and ", TextType.TEXT),
+                TextNode("this link", TextType.LINK, "https://google.com/"),
+                TextNode(" as well.", TextType.TEXT)
+            ]
+        )
 
     def test_text_to_textnodes(self):
         matches = text_to_textnodes("This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)")
-        self.assertListEqual(matches, [
-            TextNode("This is ", TextType.TEXT),
-            TextNode("text", TextType.BOLD),
-            TextNode(" with an ", TextType.TEXT),
-            TextNode("italic", TextType.ITALIC),
-            TextNode(" word and a ", TextType.TEXT),
-            TextNode("code block", TextType.CODE),
-            TextNode(" and an ", TextType.TEXT),
-            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
-            TextNode(" and a ", TextType.TEXT),
-            TextNode("link", TextType.LINK, "https://boot.dev"),
-        ])
+        self.assertListEqual(matches, 
+            [
+                TextNode("This is ", TextType.TEXT),
+                TextNode("text", TextType.BOLD),
+                TextNode(" with an ", TextType.TEXT),
+                TextNode("italic", TextType.ITALIC),
+                TextNode(" word and a ", TextType.TEXT),
+                TextNode("code block", TextType.CODE),
+                TextNode(" and an ", TextType.TEXT),
+                TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                TextNode(" and a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://boot.dev")
+            ]
+        )
