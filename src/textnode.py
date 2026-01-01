@@ -2,12 +2,12 @@ from enum import Enum
 from htmlnode import LeafNode
 
 class TextType(Enum):
-  TEXT = "text"
-  BOLD = "bold"
-  ITALIC = "italic"
-  CODE = "code"
-  LINK = "link"
-  IMAGE = "image"
+  TEXT = 1
+  BOLD = 2
+  ITALIC = 3
+  CODE = 4
+  LINK = 5
+  IMAGE = 6
 
 
 class TextNode():
