@@ -1,4 +1,7 @@
+from textnode import TextNode, TextType
+
 def main():
-  print("hello world")
+  newnode = TextNode("Umberella ella ella", TextType.TEXT)
+  print(newnode)
 
 main()
