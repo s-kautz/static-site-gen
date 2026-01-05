@@ -28,7 +28,7 @@ class LeafNode(HTMLNode):
     if not self.value:
       raise ValueError("ERROR: LeafNode has no value")
     if self.tag == "a" and not "href" in self.props.keys():
-      raise ValueError("ERROR: LeafNode link has no URL")
+      raise ValueError("ERROR: LeafNode link has no target")
     if self.props:
       return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
     return f"<{self.tag}>{self.value}</{self.tag}>"

@@ -23,10 +23,14 @@ class TestTextNode(unittest.TestCase):
   def test_leaf_to_html(self):
     node = LeafNode("p", "Hello, world!")
     self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+  
+  def test_leaf_to_html_props(self):
     test_props = dict()
     test_props["href"] = "https://google.com/"
     node = LeafNode("a", "Hello, world!", props=test_props)
     self.assertEqual(node.to_html(), '<a href="https://google.com/">Hello, world!</a>')
+
+  def test_leaf_to_html_link_with_no_target(self):
     node = LeafNode("a", "Hello, world!")
     with self.assertRaises(AttributeError):
       node.to_html()
