@@ -25,7 +25,7 @@ class LeafNode(HTMLNode):
     super(LeafNode, self).__init__(tag=tag, value=value, children=None, props=props)
   
   def to_html(self):
-    if not self.value:
+    if self.value == None:
       raise ValueError("ERROR: LeafNode has no value")
     if self.tag == "a" and not "href" in self.props.keys():
       raise ValueError("ERROR: LeafNode link has no target")
