@@ -35,7 +35,7 @@ class LeafNode(HTMLNode):
 
 class ParentNode(HTMLNode):
   def __init__(self, tag, children, props=None):
-    super(ParentNode, self).__init__(tag=tag, children=children, props=props)
+    super(ParentNode, self).__init__(tag=tag, value=None, children=children, props=props)
   
   def to_html(self):
     if not self.tag:
