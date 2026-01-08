@@ -67,6 +67,13 @@ class TestTextNode(unittest.TestCase):
     def test_delim_bold_and_italic(self):
         node = TextNode("**bold** and _italic_", TextType.TEXT)
         new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
+        self.assertListEqual(
+            [
+                TextNode("bold", TextType.BOLD),
+                TextNode(" and _italic_", TextType.TEXT),
+            ],
+            new_nodes
+        )
         new_nodes = split_nodes_delimiter(new_nodes, "_", TextType.ITALIC)
         self.assertListEqual(
             [
@@ -88,6 +95,16 @@ class TestTextNode(unittest.TestCase):
             ],
             new_nodes
         )
+
+    def test_delim_incomplete(self):
+        node = TextNode("This is text **with and unclosed delimiter.", TextType.TEXT)
+        with self.assertRaises(ValueError):
+            split_nodes_delimiter([node], "**", TextType.BOLD)
+
+    def test_delim_complete_and_incomplete(self):
+        node = TextNode("This is text with **one closed** and **one unclosed delimiter.", TextType.TEXT)
+        with self.assertRaises(ValueError):
+            split_nodes_delimiter([node], "**", TextType.BOLD)
 
     def test_extract_markdown_images(self):
         matches = extract_markdown_images(
