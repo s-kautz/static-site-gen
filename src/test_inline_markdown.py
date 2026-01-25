@@ -133,7 +133,8 @@ class TestTextNode(unittest.TestCase):
     
     def test_extract_markdown_malformed_image(self):
         text = "This is text with an incomplete ![image link](https://i.imgur.com/zjjcJKZ.png in the middle"
-        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+        with self.assertRaises(ValueError):
+            extract_markdown_images(text)
 
     '''
     Link extraction test cases
