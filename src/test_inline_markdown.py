@@ -10,6 +10,10 @@ from inline_markdown import (
 from textnode import TextNode, TextType
 
 class TestTextNode(unittest.TestCase):
+
+    '''
+    Delim split test cases
+    '''
     def test_delim_bold(self):
         node = TextNode("This is text with a **bolded** word", TextType.TEXT)
         new_nodes = split_nodes_delimiter([node], "**", TextType.BOLD)
@@ -106,6 +110,9 @@ class TestTextNode(unittest.TestCase):
         with self.assertRaises(ValueError):
             split_nodes_delimiter([node], "**", TextType.BOLD)
 
+    '''
+    Image extraction test cases
+    '''
     def test_extract_markdown_images(self):
         matches = extract_markdown_images(
             "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
@@ -123,7 +130,14 @@ class TestTextNode(unittest.TestCase):
             "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and a [regular link](https://google.com/)"
         )
         self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+    
+    def test_extract_markdown_malformed_image(self):
+        text = "This is text with an incomplete ![image link](https://i.imgur.com/zjjcJKZ.png in the middle"
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
 
+    '''
+    Link extraction test cases
+    '''
     def test_extract_markdown_links(self):
         matches = extract_markdown_links(
             "This is text with a [link](https://imgur.com/), isn't that wild?"
