@@ -18,10 +18,10 @@ def markdown_to_blocks(markdown):
   return blocks
 
 def block_to_block_type(mdblock):
-  heading_pattern = r"#{1,6} [\s\S]"
-  code_pattern = r"```[\s\S]*```"
-  quote_pattern = r"> [\s\S]"
-  ul_line_pattern = r"- [\s\S]"
+  heading_pattern = r"#{1,6} [\s\S]*"
+  code_pattern = r"```\n[\s\S]*```"
+  quote_pattern = r">[\s\S]*"
+  ul_line_pattern = r"- [\s\S]*"
 
   if re.match(heading_pattern, mdblock):
     return BlockType.HEADING
@@ -38,7 +38,7 @@ def block_to_block_type(mdblock):
     return BlockType.UL
   is_list = True
   for i in range(1, len(lines)+1):
-    ol_line_pattern = fr"{i}. "
+    ol_line_pattern = fr"{i}\. [\s\S]*"
     if not re.match(ol_line_pattern, line):
       is_list = False
   if is_list:

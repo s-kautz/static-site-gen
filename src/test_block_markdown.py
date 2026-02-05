@@ -40,6 +40,21 @@ This is a paragraph with a trailing space """
         "This is a paragraph with a trailing space",
       ],
     )
+
+  def test_markdown_to_blocks_paragraph_with_linebreaks(self):
+    test_markdown = """
+This is a regular paragraph.
+
+This is a paragraph that
+continues after a linebreak."""
+    test_blocks = markdown_to_blocks(test_markdown)
+    self.assertEqual(
+      test_blocks,
+      [
+        "This is a regular paragraph.",
+        "This is a paragraph that\ncontinues after a linebreak."
+      ],
+    )
   
   def test_block_to_block_type_paragraph(self):
     mdblock = "This is a regular paragraph"
@@ -76,13 +91,13 @@ This is an unclosed code block
 """
     self.assertEqual(block_to_block_type(mdblock), BlockType.PARAGRAPH)
 
-  def test_block_to_block_type_code(self):
+  def test_block_to_block_type_quote_space(self):
     mdblock = "> This is a quote"
     self.assertEqual(block_to_block_type(mdblock), BlockType.QUOTE)
 
-  def test_block_to_block_type_code(self):
-    mdblock = ">This is a malformatted quote"
-    self.assertEqual(block_to_block_type(mdblock), BlockType.PARAGRAPH)
+  def test_block_to_block_type_quote_no_space(self):
+    mdblock = ">This is a quote without a leading space"
+    self.assertEqual(block_to_block_type(mdblock), BlockType.QUOTE)
   
   def test_block_to_block_type_unordered_list(self):
     mdblock = """
