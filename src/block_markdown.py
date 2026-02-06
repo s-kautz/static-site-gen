@@ -1,14 +1,5 @@
 import re
-
-from enum import Enum
-
-class BlockType(Enum):
-  PARAGRAPH = "paragraph"
-  HEADING = "heading"
-  CODE = "code"
-  QUOTE = "quote"
-  UL = "unordered_list"
-  OL = "ordered_list"
+from blocknode import BlockType
 
 def markdown_to_blocks(markdown):
   block_delimiter = r"(\n\s*\n)"
